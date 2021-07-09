@@ -40,7 +40,10 @@ class ComponentCores(object):
 
     def filter_files_by_ctime(self):
         cores = []
-        start_time = (datetime.datetime.now() - datetime.timedelta(days=self.max_age)).timestamp()
+        start_time = (
+            datetime.datetime.now()
+            - datetime.timedelta(days=self.max_age)
+        ).timestamp()
         for corefile in self.all_cores:
             if os.path.getctime(corefile) > start_time:
                 cores.append(corefile)
@@ -54,9 +57,15 @@ class ComponentCores(object):
 
     def process_cores(self):
         # Copy them to destination folder
-        logger.debug("Processing cores of component {} dirs {}".format(self.component, self.get_core_dirs()))
+        logger.debug(
+            "Processing cores of component {} dirs {}".format(
+                self.component, self.get_core_dirs(),
+            ),
+        )
         for core_dir in self.get_core_dirs():
-            dest_core_dir = os.path.join(self.dest_dir, os.path.basename(core_dir))
+            dest_core_dir = os.path.join(
+                self.dest_dir, os.path.basename(core_dir),
+            )
             logger.info("Copying {} to {}".format(core_dir, dest_core_dir))
             if os.path.exists(dest_core_dir):
                 shutil.rmtree(dest_core_dir)
@@ -91,11 +100,21 @@ class CoreFile(object):
 
     def analyze(self):
         self.uncompress_file()
-        cmd = "gdb --batch --quiet -ex 'start thread apply all bt full' -ex 'quit'  {} {}".format(self.app_binary, self.uncompressed_core_file)
-        core_dest_dir = os.path.join(self.dest_dir, os.path.basename(os.path.dirname(self.uncompressed_core_file)))
+        cmd = "gdb --batch --quiet -ex 'start thread apply all bt full' -ex 'quit'  {} {}".format(
+            self.app_binary, self.uncompressed_core_file,
+        )
+        core_dest_dir = os.path.join(
+            self.dest_dir, os.path.basename(
+                os.path.dirname(self.uncompressed_core_file),
+            ),
+        )
         dbg_file = os.path.join(core_dest_dir, "dbg.txt")
         os.makedirs(core_dest_dir, exist_ok=True)
-        logger.info("component {} core {} - dbg output file: {}".format(self.app_binary, self.uncompressed_core_file, dbg_file))
+        logger.info(
+            "component {} core {} - dbg output file: {}".format(
+                self.app_binary, self.uncompressed_core_file, dbg_file,
+            ),
+        )
 
         with open(dbg_file, 'a') as fout:
             ret = subprocess.run(

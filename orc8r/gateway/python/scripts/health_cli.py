@@ -25,8 +25,8 @@ def is_docker():
     """ Checks if the current script is executed in a docker container """
     path = '/proc/self/cgroup'
     return (
-        os.path.exists('/.dockerenv') or
-        os.path.isfile(path) and any('docker' in line for line in open(path))
+        os.path.exists('/.dockerenv')
+        or os.path.isfile(path) and any('docker' in line for line in open(path))
     )
 
 

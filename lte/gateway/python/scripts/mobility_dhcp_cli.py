@@ -17,6 +17,7 @@ limitations under the License.
 CLI for dhclient
 """
 
+
 import argparse
 import ipaddress
 import random

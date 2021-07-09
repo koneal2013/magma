@@ -154,8 +154,14 @@ def create_parser():
             default='',
         )
         icmp = proto_sp.add_parser('icmp', help='Specify icmp packet')
-        icmp.add_argument('-t', '--type', type=int, help='ICMP type', default=0)
-        icmp.add_argument('-c', '--code', type=int, help='ICMP code', default=0)
+        icmp.add_argument(
+            '-t', '--type', type=int,
+            help='ICMP type', default=0,
+        )
+        icmp.add_argument(
+            '-c', '--code', type=int,
+            help='ICMP code', default=0,
+        )
         tcp.set_defaults(func=_trace_tcp_pkt)
         icmp.set_defaults(func=_trace_icmp_pkt)
 

@@ -68,10 +68,10 @@ def gen_bindings(
         inouts.append('--mypy_out=' + output_dir)
 
     protoc.main(
-        ('',) +
-        tuple('-I' + path for path in include_paths) +
-        tuple(inouts) +
-        tuple(f for f in protofiles),
+        ('',)
+        + tuple('-I' + path for path in include_paths)
+        + tuple(inouts)
+        + tuple(f for f in protofiles),
     )
 
 

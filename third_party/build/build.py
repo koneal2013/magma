@@ -104,7 +104,9 @@ def buildrequires(package_name, env=None):
 
 def build(package_name, env=None, install=True):
     script = buildscript(package_name)
-    outputfilename = subprocess.check_output([script, '-F'], env=env).decode('utf-8').strip()
+    outputfilename = subprocess.check_output(
+        [script, '-F'], env=env,
+    ).decode('utf-8').strip()
     if not os.path.exists('./' + outputfilename):
         subprocess.run([script], check=True, env=env)
     else:
@@ -175,7 +177,9 @@ def main(args):
 
     for package in ordered_packages:
         to_install.update(buildrequires(package))
-    subprocess.run([SUDO, packagemanager(), 'install', '-y'] + list(to_install))
+    subprocess.run(
+        [SUDO, packagemanager(), 'install', '-y'] + list(to_install),
+    )
 
     for package in ordered_packages:
         build(package, env=env, install=not args.no_install)
